@@ -1,6 +1,6 @@
 # Ansible scripts
 
-Each folder is a collection of Ansible scripts for configuring servers.
+Each folder is a collection of Ansible scripts for configuring Linux servers.
 
 
 ## Ansible setup
