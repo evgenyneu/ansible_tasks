@@ -1,0 +1,53 @@
+- name: 'Install zsh package'
+  apt:
+    pkg: '{{ item }}'
+    state: present
+  with_items:
+    - zsh
+
+- name: Clone oh-my-zsh repository
+  become: true
+  become_user: "{{ zsh_user }}"
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh
+    depth: 1
+    dest: "/home/{{ zsh_user }}/.oh-my-zsh"
+
+- name: Clone zsh-autosuggestions repository
+  become: true
+  become_user: "{{ zsh_user }}"
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    depth: 1
+    dest: "/home/{{ zsh_user }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+
+- name: Add powerlevel10k plugin
+  become: true
+  become_user: "{{ zsh_user }}"
+  git:
+    repo: https://github.com/romkatv/powerlevel10k.git
+    depth: 1
+    dest: "/home/{{ zsh_user }}/.oh-my-zsh/custom/themes/powerlevel10k"
+
+- name: 'Copy .zshrc config'
+  copy:
+    src: ../files/.zshrc
+    dest: "/home/{{ zsh_user }}/.zshrc"
+    owner: "{{ zsh_user }}"
+    group: "{{ zsh_user }}"
+    mode: 0644
+
+# - name: 'Copy .p10k.zsh config'
+#   copy:
+#     src: ../files/.p10k.zsh
+#     dest: "/home/{{ item }}/.p10k.zsh"
+#     owner: "{{ item }}"
+#     group: "{{ item }}"
+#     mode: 0644
+#   with_items: "{{ ohmyzsh_users }}"
+
+- name: Ensure user is using zsh shell
+  user:
+    name: "{{ zsh_user }}"
+    shell: /bin/zsh
+    update_password: on_create
