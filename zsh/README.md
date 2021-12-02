@@ -13,6 +13,6 @@ Installs ZSH, oh-my-zsh and powerlevel10k plugin.
 ## Run
 
 ```
-ansible-playbook -T playbook.yml
+ansible-playbook -K playbook.yml
 ```
 
